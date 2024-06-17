@@ -1,5 +1,188 @@
-/*#include <stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
 #include <math.h>
+
+// Function prototypes
+void arrayDetails(int *arr, int size);
+int is_prime(int n);
+int nearest_prime_below(int n);
+int sum_of_digits(int n);
+char* numberTransformer(int n);
+int reverseNum(int n3);
+int smallerThanIndex(int *numbers, int size);
+int UABNumber(int n);
+
+int main() {
+    int choice;
+    printf("Choose a function to execute:\n");
+    printf("1. Array Details\n");
+    printf("2. Number Transformer\n");
+    printf("3. Reverse Number\n");
+    printf("4. Count of Numbers Smaller Than Their Index\n");
+    printf("5. UAB Number\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+    getchar(); // To consume the newline character after scanf
+
+    switch(choice) {
+        case 1: {
+            char input[1000];
+            printf("Enter the array elements separated by commas (e.g., [1,2,3,4]): ");
+            fgets(input, sizeof(input), stdin);
+
+            // Remove square brackets if present
+            char *start = strchr(input, '[');
+            char *end = strchr(input, ']');
+            if (start && end && end > start) {
+                start++;
+                *end = '\0';
+            } else {
+                start = input;
+            }
+
+            // Initialize dynamic array
+            int *arr = (int *)malloc(sizeof(int));
+            if (arr == NULL) {
+                printf("Memory allocation failed!\n");
+                return 1;
+            }
+
+            int size = 0;
+            char *token = strtok(start, ",");
+            while (token != NULL) {
+                arr[size] = atoi(token);
+                size++;
+                arr = (int *)realloc(arr, (size + 1) * sizeof(int));
+                if (arr == NULL) {
+                    printf("Memory allocation failed!\n");
+                    return 1;
+                }
+                token = strtok(NULL, ",");
+            }
+
+            // Call the function to print array details
+            arrayDetails(arr, size);
+
+            // Free the allocated memory
+            free(arr);
+            break;
+        }
+        case 2: {
+            int n;
+            printf("Enter a positive integer n: ");
+            scanf("%d", &n);
+            printf("Output: %s\n", numberTransformer(n));
+            break;
+        }
+        case 3: {
+            int n3;
+            // Prompt the user for input
+            printf("Enter a positive integer: ");
+            scanf("%d", &n3);
+            // Check if the input is positive
+            if (n3 <= 0) {
+                printf("Please enter a positive integer.\n");
+                return 1;
+            }
+            // Reverse the number and print the result
+            int result = reverseNum(n3);
+            printf("Reversed number: %d\n", result);
+            break;
+        }
+        case 4: {
+            char input[1000];
+            printf("Enter the array elements separated by commas (e.g., [1,2,3,4]): ");
+            fgets(input, sizeof(input), stdin);
+
+            // Remove square brackets if present
+            char *start = strchr(input, '[');
+            char *end = strchr(input, ']');
+            if (start && end && end > start) {
+                start++;
+                *end = '\0';
+            } else {
+                start = input;
+            }
+
+            // Initialize dynamic array
+            int *numbers = (int *)malloc(sizeof(int));
+            if (numbers == NULL) {
+                printf("Memory allocation failed!\n");
+                return 1;
+            }
+
+            int size = 0;
+            char *token = strtok(start, ",");
+            while (token != NULL) {
+                numbers[size] = atoi(token);
+                size++;
+                numbers = (int *)realloc(numbers, (size + 1) * sizeof(int));
+                if (numbers == NULL) {
+                    printf("Memory allocation failed!\n");
+                    return 1;
+                }
+                token = strtok(NULL, ",");
+            }
+
+            // Call the function and print the result
+            int result = smallerThanIndex(numbers, size);
+            printf("Count of numbers smaller than their index: %d\n", result);
+
+            // Free the allocated memory
+            free(numbers);
+            break;
+        }
+        case 5: {
+            int n;
+            printf("Enter an integer: ");
+            scanf("%d", &n);
+            // Calling the UABNumber function and printing the result
+            if (UABNumber(n)) {
+                printf("%d TRUE.\n", n);
+            } else {
+                printf("%d FALSE.\n", n);
+            }
+            break;
+        }
+        default:
+            printf("Invalid choice.\n");
+    }
+
+    return 0;
+}
+
+void arrayDetails(int *arr, int size) {
+    if (size == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+
+    int minValue = INT_MAX;
+    int minIndex = -1;
+    int maxValue = INT_MIN;
+    int maxIndex = -1;
+    double sum = 0.0;
+
+    for (int i = 0; i < size; i++) {
+        if (arr[i] < minValue) {
+            minValue = arr[i];
+            minIndex = i;
+        }
+        if (arr[i] > maxValue) {
+            maxValue = arr[i];
+            maxIndex = i;
+        }
+        sum += arr[i];
+    }
+
+    // Calculate mean and round to the nearest whole number
+    int mean = round(sum / size);
+
+    // Print the result
+    printf("Result: [%d, %d, %d, %d, %d, %d]\n", size, minValue, minIndex, mean, maxValue, maxIndex);
+}
 
 int is_prime(int n) {
     if (n <= 1) return 0; // 0 and 1 are not primes
@@ -53,52 +236,6 @@ char* numberTransformer(int n) {
     return result;
 }
 
-int main() {
-    int n;
-    printf("Enter a positive integer n: ");
-    scanf("%d", &n);
-    printf("Output: %s\n", numberTransformer(n));
-    return 0;
-}
-
-#include <stdio.h>
-
-// Function to check if a number is a UABNumber
-int UABNumber(int n) {
-    int sum = 0;
-    
-    // Finding the sum of positive divisors
-    for (int i = 1; i <= n / 2; i++) {
-        if (n % i == 0) {
-            sum += i;
-        }
-    }
-
-    // Comparing the sum with the number itself
-    if (sum == n) {
-        return 1; // True, the number is a UABNumber
-    } else {
-        return 0; // False, the number is not a UABNumber
-    }
-}
-
-int main() {
-    int n;
-    printf("Enter an integer: ");
-    scanf("%d", &n);
-    
-    // Calling the UABNumber function and printing the result
-    if (UABNumber(n)) {
-        printf("%d TRUE.\n", n);
-    } else {
-        printf("%d FALSE.\n", n);
-    }
-
-    return 0;
-} 
-
-#include <stdio.h>
-
 int reverseNum(int n3) {
     int reversed = 0;
     
@@ -116,30 +253,6 @@ int reverseNum(int n3) {
     return reversed;
 }
 
-int main() {
-    int n3;
-    
-    // Prompt the user for input
-    printf("Enter a positive integer: ");
-    scanf("%d", &n3);
-    
-    // Check if the input is positive
-    if (n3 <= 0) {
-        printf("Please enter a positive integer.\n");
-        return 1;
-    }
-    
-    // Reverse the number and print the result
-    int result = reverseNum(n3);
-    printf("Reversed number: %d\n", result);
-    
-    return 0;
-}
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 int smallerThanIndex(int *numbers, int size) {
     int count = 0;
 
@@ -152,128 +265,20 @@ int smallerThanIndex(int *numbers, int size) {
     return count;
 }
 
-int main() {
-    char input[1000];
-    printf("Enter the array elements separated by commas (e.g., [1,2,3,4]): ");
-    fgets(input, sizeof(input), stdin);
+int UABNumber(int n) {
+    int sum = 0;
+    
+    // Finding the sum of positive divisors
+    for (int i = 1; i <= n / 2; i++) {
+        if (n % i == 0) {
+            sum += i;
+        }
+    }
 
-    // Remove square brackets if present
-    char *start = strchr(input, '[');
-    char *end = strchr(input, ']');
-    if (start && end && end > start) {
-        start++;
-        *end = '\0';
+    // Comparing the sum with the number itself
+    if (sum == n) {
+        return 1; // True, the number is a UABNumber
     } else {
-        start = input;
+        return 0; // False, the number is not a UABNumber
     }
-
-    // Initialize dynamic array
-    int *numbers = (int *)malloc(sizeof(int));
-    if (numbers == NULL) {
-        printf("Memory allocation failed!\n");
-        return 1;
-    }
-
-    int size = 0;
-    char *token = strtok(start, ",");
-    while (token != NULL) {
-        numbers[size] = atoi(token);
-        size++;
-        numbers = (int *)realloc(numbers, (size + 1) * sizeof(int));
-        if (numbers == NULL) {
-            printf("Memory allocation failed!\n");
-            return 1;
-        }
-        token = strtok(NULL, ",");
-    }
-
-    // Call the function and print the result
-    int result = smallerThanIndex(numbers, size);
-    printf("Count of numbers smaller than their index: %d\n", result);
-
-    // Free the allocated memory
-    free(numbers);
-
-    return 0;
-} */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <math.h>
-
-void arrayDetails(int *arr, int size) {
-    if (size == 0) {
-        printf("Array is empty.\n");
-        return;
-    }
-
-    int minValue = INT_MAX;
-    int minIndex = -1;
-    int maxValue = INT_MIN;
-    int maxIndex = -1;
-    double sum = 0.0;
-
-    for (int i = 0; i < size; i++) {
-        if (arr[i] < minValue) {
-            minValue = arr[i];
-            minIndex = i;
-        }
-        if (arr[i] > maxValue) {
-            maxValue = arr[i];
-            maxIndex = i;
-        }
-        sum += arr[i];
-    }
-
-    // Calculate mean and round to the nearest whole number
-    int mean = round(sum / size);
-
-    // Print the result
-    printf("Result: [%d, %d, %d, %d, %d, %d]\n", size, minValue, minIndex, mean, maxValue, maxIndex);
-}
-
-int main() {
-    char input[1000];
-    printf("Enter the array elements separated by commas (e.g., [1,2,3,4]): ");
-    fgets(input, sizeof(input), stdin);
-
-    // Remove square brackets if present
-    char *start = strchr(input, '[');
-    char *end = strchr(input, ']');
-    if (start && end && end > start) {
-        start++;
-        *end = '\0';
-    } else {
-        start = input;
-    }
-
-    // Initialize dynamic array
-    int *arr = (int *)malloc(sizeof(int));
-    if (arr == NULL) {
-        printf("Memory allocation failed!\n");
-        return 1;
-    }
-
-    int size = 0;
-    char *token = strtok(start, ",");
-    while (token != NULL) {
-        arr[size] = atoi(token);
-        size++;
-        arr = (int *)realloc(arr, (size + 1) * sizeof(int));
-        if (arr == NULL) {
-            printf("Memory allocation failed!\n");
-            return 1;
-        }
-        token = strtok(NULL, ",");
-    }
-
-    // Call the function to print array details
-    arrayDetails(arr, size);
-
-    // Free the allocated memory
-    free(arr);
-
-    return 0;
 }
