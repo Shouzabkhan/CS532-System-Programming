@@ -1,5 +1,5 @@
-Name: [Your Name]
-BlazerId: [Your BlazerId]
+Name: Shouzab khan
+BlazerId: Skhan6
 Project #: HW 2
 
 To compile:
