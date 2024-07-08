@@ -19,30 +19,43 @@ struct Listing attribute(char *line) {
 
     // Initialize item.id and parse other attributes
     token = strtok(line, ",");
-    if (token == NULL) {
-        // Handle error or return a default value
-        // Example: memset(&item, 0, sizeof(struct Listing));
-        return item;
-    }
     item.id = atoi(token);
 
     token = strtok(NULL, ",");
-    if (token == NULL) {
-        // Handle error or return a default value
-        // Example: memset(&item, 0, sizeof(struct Listing));
-        return item;
-    }
     item.host_id = atoi(token);
 
     token = strtok(NULL, ",");
-    if (token == NULL) {
-        // Handle error or return a default value
-        // Example: memset(&item, 0, sizeof(struct Listing));
-        return item;
-    }
     item.host_name = strdup(token);
 
-    // Continue parsing other fields similarly...
+    token = strtok(NULL, ",");
+    item.neighbourhood_group = strdup(token);
+
+    token = strtok(NULL, ",");
+    item.neighbourhood = strdup(token);
+
+    token = strtok(NULL, ",");
+    item.latitude = atof(token);
+
+    token = strtok(NULL, ",");
+    item.longitude = atof(token);
+
+    token = strtok(NULL, ",");
+    item.room_type = strdup(token);
+
+    token = strtok(NULL, ",");
+    item.price = atof(token);
+
+    token = strtok(NULL, ",");
+    item.minimum_nights = atoi(token);
+
+    token = strtok(NULL, ",");
+    item.number_of_reviews = atoi(token);
+
+    token = strtok(NULL, ",");
+    item.calculated_host_listings_count = atoi(token);
+
+    token = strtok(NULL, ",");
+    item.availability_365 = atoi(token);
 
     return item;
 }
@@ -62,6 +75,12 @@ int main() {
         return 1;
     }
 
+    // Read and skip the header line
+    if (fgets(line, LINESIZE, fptr) == NULL) {
+        printf("Error reading header line from listings.csv\n");
+        return 1;
+    }
+
     // Read and parse each line
     while (fgets(line, LINESIZE, fptr) != NULL) {
         items[count++] = attribute(line);
@@ -77,8 +96,18 @@ int main() {
         printf("Error creating sorted_by_name.csv\n");
         return 1;
     }
+
+    // Write header
+    fprintf(fp_by_name, "id,host_id,host_name,neighbourhood_group,neighbourhood,latitude,longitude,room_type,price,minimum_nights,number_of_reviews,calculated_host_listings_count,availability_365\n");
+
+    // Write sorted data
     for (int i = 0; i < count; i++) {
-        fprintf(fp_by_name, "%s,%.2f\n", items[i].host_name, items[i].price);
+        fprintf(fp_by_name, "%d,%d,%s,%s,%s,%f,%f,%s,%f,%d,%d,%d,%d\n",
+                items[i].id, items[i].host_id, items[i].host_name,
+                items[i].neighbourhood_group, items[i].neighbourhood,
+                items[i].latitude, items[i].longitude, items[i].room_type,
+                items[i].price, items[i].minimum_nights, items[i].number_of_reviews,
+                items[i].calculated_host_listings_count, items[i].availability_365);
     }
     fclose(fp_by_name);
 
@@ -91,8 +120,18 @@ int main() {
         printf("Error creating sorted_by_price.csv\n");
         return 1;
     }
+
+    // Write header
+    fprintf(fp_by_price, "id,host_id,host_name,neighbourhood_group,neighbourhood,latitude,longitude,room_type,price,minimum_nights,number_of_reviews,calculated_host_listings_count,availability_365\n");
+
+    // Write sorted data
     for (int i = 0; i < count; i++) {
-        fprintf(fp_by_price, "%s,%.2f\n", items[i].host_name, items[i].price);
+        fprintf(fp_by_price, "%d,%d,%s,%s,%s,%f,%f,%s,%f,%d,%d,%d,%d\n",
+                items[i].id, items[i].host_id, items[i].host_name,
+                items[i].neighbourhood_group, items[i].neighbourhood,
+                items[i].latitude, items[i].longitude, items[i].room_type,
+                items[i].price, items[i].minimum_nights, items[i].number_of_reviews,
+                items[i].calculated_host_listings_count, items[i].availability_365);
     }
     fclose(fp_by_price);
 
