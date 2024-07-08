@@ -1,31 +1,22 @@
-# Lab 6: Sorting and Writing CSV Data in C
+# Lab 6 - CS 332/532 Systems Programming
 
 ## Overview
-This lab assignment focuses on reading a CSV file (`listings.csv`), parsing its data into a structured format using C, sorting the data based on specified criteria (host name and price), and writing the sorted data to new CSV files.
 
-## Objectives
-1. Utilize standard I/O operations in C to read from and write to files.
-2. Implement sorting algorithms to sort data structures based on specific fields.
-3. Demonstrate proficiency in memory management for dynamically allocated strings.
-4. Create a Makefile for compiling and building the project.
+This lab involves reading a CSV file containing various listings, parsing the data into a C structure, and then sorting the data based on two different fields: `host_name` and `price`. The sorted data is then written into two new CSV files: `sorted_by_name.csv` and `sorted_by_price.csv`.
 
-## Files Included
-- `Lab06.c`: Main source file containing the implementation of the CSV parsing, sorting, and file writing functionalities.
-- `listings.csv`: Input CSV file containing listings data to be processed.
+## Files
 
-## Functionality
-### Parsing CSV Data
-The program reads each line from `listings.csv`, parses it using `strtok` to extract individual fields, and stores the parsed data into an array of `struct Listing`.
-
-### Sorting
-Two sorting functions (`sortByHostName` and `sortByPrice`) are implemented using bubble sort algorithm to sort the array of `struct Listing` based on host name and price fields respectively.
-
-### Writing Sorted Data
-After sorting, the sorted data is written to two separate CSV files:
-- `sorted_by_name.csv`: Contains listings sorted by host name.
-- `sorted_by_price.csv`: Contains listings sorted by price.
+- `Lab06.c`: The main C program that reads, parses, sorts, and writes the data.
+- `listings.csv`: The input CSV file containing the listings data.
+- `sorted_by_name.csv`: The output CSV file sorted by `host_name`.
+- `sorted_by_price.csv`: The output CSV file sorted by `price`.
+- `Makefile`: The makefile to compile the program.
 
 ## Compilation and Execution
-To compile the program, use the provided Makefile:
-```bash
-$ make
+
+### Compiling the Program
+
+To compile the program, use the provided `Makefile`. Open a terminal in the directory containing the `Lab06.c` file and run the following command:
+
+```sh
+make
