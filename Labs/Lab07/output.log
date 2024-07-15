@@ -40,3 +40,23 @@ ls -l /home	Mon Jul 15 04:09:40 2024	Mon Jul 15 04:09:40 2024
 date	Mon Jul 15 04:09:44 2024	Mon Jul 15 04:09:44 2024
 echo "Hello, World!"	Mon Jul 15 04:09:44 2024	Mon Jul 15 04:09:44 2024
 /sbin/ifconfig	Mon Jul 15 04:09:44 2024	Mon Jul 15 04:09:44 2024
+uname -a	Mon Jul 15 04:15:55 2024	Mon Jul 15 04:15:55 2024
+/sbin/ifconfig	Mon Jul 15 04:15:55 2024	Mon Jul 15 04:15:55 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 500	Mon Jul 15 04:15:55 2024	Mon Jul 15 04:15:56 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000	Mon Jul 15 04:15:56 2024	Mon Jul 15 04:16:00 2024
+uname -a Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+/sbin/ifconfig Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 500 Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000 Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+/sbin/ifconfig Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 500 Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000 Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000 Mon Jul 15 04:28:32 2024 Mon Jul 15 04:28:32 2024
+uname -a Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
+/sbin/ifconfig Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 500 Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000 Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
+/sbin/ifconfig Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 500 Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000 Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000 Mon Jul 15 04:30:36 2024 Mon Jul 15 04:30:36 2024
