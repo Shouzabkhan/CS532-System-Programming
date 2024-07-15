@@ -31,34 +31,10 @@ void execute_command(const char *command) {
     }
     args[i] = NULL;  // Null-terminate the array of arguments
 
-    // Record start time
-    time_t start_time;
-    time(&start_time);
-
-    // Execute the command
-    int status = execvp(args[0], args);
-
-    if (status == -1) {
-        perror("execvp");       // If execvp returns, an error occurred
-        exit(EXIT_FAILURE);
-    }
-
-    // Record end time if execution completes (though this won't be reached if execvp succeeds)
-    time_t end_time;
-    time(&end_time);
-
-    // Log command execution with timestamps
-    char start_time_str[26], end_time_str[26];
-    ctime_r(&start_time, start_time_str);
-    ctime_r(&end_time, end_time_str);
-    start_time_str[strcspn(start_time_str, "\n")] = '\0';  // Remove the newline character
-    end_time_str[strcspn(end_time_str, "\n")] = '\0';      // Remove the newline character
-
-    printf("%s %s %s\n", command, start_time_str, end_time_str);
-
-    exit(EXIT_SUCCESS);  // Ensure child process exits
+    execvp(args[0], args);  // Execute the command
+    perror("execvp");       // If execvp returns, an error occurred
+    exit(EXIT_FAILURE);
 }
-
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -83,12 +59,24 @@ int main(int argc, char *argv[]) {
         } else if (pid == 0) {  // Child process
             execute_command(line);
         } else {  // Parent process
+            time_t start_time, end_time;
+            char start_time_str[26], end_time_str[26];
+            
+            time(&start_time);
+            ctime_r(&start_time, start_time_str);
+            start_time_str[strcspn(start_time_str, "\n")] = '\0';  // Remove the newline character
+
             int status;
             waitpid(pid, &status, 0);
+
+            time(&end_time);
+            ctime_r(&end_time, end_time_str);
+            end_time_str[strcspn(end_time_str, "\n")] = '\0';  // Remove the newline character
+
+            log_command(line, start_time_str, end_time_str);
         }
     }
 
     fclose(file);
     return 0;
 }
-
