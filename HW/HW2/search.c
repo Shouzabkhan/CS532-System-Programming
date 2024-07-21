@@ -121,33 +121,33 @@ void usage(const char *progname) {
 int main(int argc, char *argv[]) {
     options_t opts = {0, -1, INT_MAX, NULL, 0};
     int opt;
+    int long_index = 0;
     char *progname = argv[0];
 
-    while ((opt = getopt(argc, argv, "Ss:f:t:")) != -1) {
-        switch (opt) {
-            case 'S':
-                opts.show_info = 1;
-                break;
-            case 's':
-                opts.max_size = atoi(optarg);
-                break;
-            case 'f':
-                opts.pattern = optarg;
+    static struct option long_options[] = {{"size", required_argument, 0, 's'},  {"find", required_argument, 0, 'f'}, {0, 0, 0, 0}};
+
+    while ((opt = getopt_long(argc, argv, "Ss:f:", long_options, &long_index)) != -1) {
+    switch (opt) {
+        case 's':
+            opts.max_size = atoi(optarg);
+            break;
+        case 'f':
+            opts.pattern = optarg;
+            if (optind < argc && argv[optind][0] != '-') {
                 opts.max_depth = atoi(argv[optind]);
-                break;
-            case 't':
-                if (strcmp(optarg, "f") == 0) {
-                    opts.type_filter = 1;
-                } else if (strcmp(optarg, "d") == 0) {
-                    opts.type_filter = 2;
-                } else {
-                    usage(progname);
-                }
-                break;
-            default:
-                usage(progname);
-        }
+                optind++;
+            } else {
+                opts.max_depth = INT_MAX;
+            }
+            break;
+        case 'S':
+            opts.show_info = 1;
+            break;
+        default:
+            usage(progname);
     }
+}
+
 
     const char *dirpath = (optind < argc) ? argv[optind] : ".";
     list_directory(dirpath, 0, &opts);
