@@ -14,16 +14,18 @@
 
 #define MAX_PATH 1024
 
+// Structure to hold the options for the search program
 typedef struct {
-    int show_info;
-    int max_size;
-    int max_depth;
-    const char *pattern;
+    int show_info; // Flag to show detailed file information
+    int max_size; // Maximum file size to filter
+    int max_depth; // Maximum directory depth to search
+    const char *pattern; // Pattern to match filenames
     int type_filter; // 0 for no filter, 1 for regular files, 2 for directories
-    const char *exec_command; // Command to execute -e
-    const char *exec_command_E; // Command to execute for -E
+    const char *exec_command; // Command to execute for -e option
+    const char *exec_command_E; // Command to execute for -E option
 } options_t;
 
+// Function pointer type for file handlers
 typedef void (*file_handler)(const char *dirpath, const struct dirent *entry, const struct stat *st, int depth, options_t *opts);
 
 // Function prototypes
@@ -32,6 +34,7 @@ void handle_file(const char *dirpath, const struct dirent *entry, const struct s
 void handle_directory(const char *dirpath, const struct dirent *entry, const struct stat *st, int depth, options_t *opts);
 void handle_symlink(const char *dirpath, const struct dirent *entry, const struct stat *st, int depth, options_t *opts);
 
+// Function to print file information in a human-readable format
 void print_file_info(const char *filename, const struct stat *st) {
     char time_str[20];
     strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localtime(&st->st_atime));
@@ -40,6 +43,7 @@ void print_file_info(const char *filename, const struct stat *st) {
 
 // Function to handle regular files
 void handle_file(const char *dirpath, const struct dirent *entry, const struct stat *st, int depth, options_t *opts) {
+    // Check if the file matches the pattern and size criteria
     if ((opts->pattern == NULL || strstr(entry->d_name, opts->pattern)) &&
         (opts->max_size < 0 || st->st_size <= opts->max_size)) {
         // Print file details
@@ -88,6 +92,7 @@ void handle_file(const char *dirpath, const struct dirent *entry, const struct s
 
 // Function to handle directories
 void handle_directory(const char *dirpath, const struct dirent *entry, const struct stat *st __attribute__((unused)), int depth, options_t *opts) {
+    // Check if the current depth is within the maximum depth allowed
     if (depth < opts->max_depth) {
         char new_dirpath[MAX_PATH];
         snprintf(new_dirpath, MAX_PATH, "%s/%s", dirpath, entry->d_name);
@@ -131,6 +136,7 @@ void list_directory(const char *dirpath, int depth, options_t *opts) {
 
         file_handler handler = NULL;
 
+        // Determine the type of file and assign the appropriate handler
         if (S_ISDIR(st.st_mode)) {
             if (opts->type_filter == 0 || opts->type_filter == 2) {
                 handler = handle_directory;
@@ -159,7 +165,7 @@ void usage(const char *progname) {
 
 // Main function
 int main(int argc, char *argv[]) {
-    options_t opts = {0, -1, INT_MAX, NULL, 0, NULL, NULL};
+    options_t opts = {0, -1, INT_MAX, NULL, 0, NULL, NULL}; // Initialize options
     int opt;
     int long_index = 0;
     char *progname = argv[0];
@@ -172,6 +178,7 @@ int main(int argc, char *argv[]) {
         {0, 0, 0, 0}
     };
 
+    // Parse command-line options
     while ((opt = getopt_long(argc, argv, "Ss:f:e:E:", long_options, &long_index)) != -1) {
         switch (opt) {
             case 's':
@@ -200,6 +207,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // Determine the starting directory
     const char *dirpath = (optind < argc) ? argv[optind] : ".";
     list_directory(dirpath, 0, &opts);
 
