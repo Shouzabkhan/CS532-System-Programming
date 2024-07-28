@@ -1,0 +1,4 @@
+uname -a
+/sbin/ifconfig
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 500
+/workspaces/CS532-System-Programming/Labs/Lab07/hw1 1000
